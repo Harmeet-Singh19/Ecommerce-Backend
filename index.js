@@ -6,6 +6,7 @@ const cors = require("cors");
 const bodyParser = require("body-parser");
 const PORT = process.env.PORT;
 //ROUTES
+const AdminRoutes=require('./Routes/Admin/index')
 const UserRoutes=require('./Routes/User/index')
 
 app.use(bodyParser.urlencoded({ extended: false }));
@@ -34,6 +35,7 @@ mongoose
     }
   );
 
+  app.use("/api/admin", AdminRoutes);
   app.use("/api/user", UserRoutes);
 
 
