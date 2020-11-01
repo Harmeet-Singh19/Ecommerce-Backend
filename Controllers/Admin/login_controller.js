@@ -102,6 +102,20 @@ const getAllAdmins = async (req, res) => {
   }
 };
 
+const getAllVendors = async (req, res) => {
+  try {
+    const allVendors = await AdminModel.find(
+      {
+        isVendor:true
+      },
+      { name: 1, email: 1, phone: 1, isVendor: 1 }
+    );
+    return res.status(200).send(allVendors);
+  } catch (e) {
+    console.log(e);
+    return res.status(404).json({ message: "Internal Server Error." });
+  }
+};
 const getAdminById = async (req, res) => {
   try {
     const admin = await AdminModel.findById(req.params.id);
@@ -158,4 +172,5 @@ module.exports = {
   updateAdmin,
   removeAdmin,
   currUser,
+  getAllVendors
 };

@@ -1,6 +1,7 @@
 const UserModel = require('../../models/user');
 const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
+const {signup,getBill}=require('../../Utils/mailGenerator')
 
 async function register(req, res) {
   //required email,phone,password
@@ -32,6 +33,7 @@ async function register(req, res) {
       password: hashedPassword,
     });
     await newUser.save();
+    signup(req);
     return res.status(200).json({ message: "Registration Completed" });
   } catch (e) {
     console.log(e);

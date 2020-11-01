@@ -12,7 +12,7 @@ const addImage = async (req, res) => {
       res.status(200).json({message:"successful",images:links})
     } catch (e) {
       console.log(e);
-      res.status(404).json({ message: "internal server error" });
+      res.status(404).json({ message: "Internal server error" });
     }
   };
 
@@ -39,7 +39,7 @@ const getAllBooks = async (req, res) => {
       res.status(200).send(allBooks);
     } catch (e) {
       console.log(e);
-      res.status(404).json({ message: "internal server error" });
+      res.status(404).json({ message: "Internal server error" });
     }
   };
   
@@ -50,7 +50,17 @@ const getAllBooks = async (req, res) => {
       res.status(200).send(allBooks);
     } catch (e) {
       console.log(e);
-      res.status(404).json({ message: "internal server error" });
+      res.status(404).json({ message: "Internal server error" });
+    }
+  };
+  const getBookByVendor = async (req, res) => {
+    try {
+      let allBooks = await BookModel.find({ seller: req.params.id })
+      .populate("seller")
+      res.status(200).send(allBooks);
+    } catch (e) {
+      console.log(e);
+      res.status(404).json({ message: "Internal server error" });
     }
   };
 
@@ -120,7 +130,7 @@ const getAllBooks = async (req, res) => {
       }
     } catch (e) {
       console.log(e);
-      res.status(404).json({ message: "internal server error" });
+      res.status(404).json({ message: "Internal server error" });
     }
   };
 
@@ -131,5 +141,6 @@ const getAllBooks = async (req, res) => {
       getBookById,
       modifyBook,
       deleteBook,
-      updateImage
+      updateImage,
+      getBookByVendor
   }

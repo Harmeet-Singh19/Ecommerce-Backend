@@ -8,6 +8,7 @@ const PORT = process.env.PORT;
 //ROUTES
 const AdminRoutes=require('./Routes/Admin/index')
 const UserRoutes=require('./Routes/User/index')
+const Mail =require('./Utils/mailGenerator')
 
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
@@ -44,3 +45,4 @@ app.get("/", async (req, res) => {
   return res.json({ message: "working" });
 });
 
+//Mail.signup()

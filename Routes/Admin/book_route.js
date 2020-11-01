@@ -8,6 +8,7 @@ router.post("/image/add",AdminAuthMiddleware,upload.array("multi-files", 10),Boo
 router.post("/add", AdminAuthMiddleware, BookControllers.addBook);
 router.get("/", AdminAuthMiddleware, BookControllers.getAllBooks);
 router.get("/:id", AdminAuthMiddleware, BookControllers.getBookById);
+router.get("/vendor/:id", AdminAuthMiddleware, BookControllers.getBookByVendor);
 router.put("/:id", AdminAuthMiddleware, BookControllers.modifyBook);
 router.delete("/:id", AdminAuthMiddleware, BookControllers.deleteBook);
 router.post(
@@ -16,15 +17,6 @@ router.post(
   upload.array("multi-files", 10),
   BookControllers.updateImage
 );
-/*
 
-router.put("/:id", AdminAuthMiddleware, BookControllers.modifyDish);
-router.post(
-  "/image/:dishId",
-  AdminAuthMiddleware,
-  upload.array("multi-files", 10),
-  BookControllers.updateImage
-);
-router.delete("/:id", AdminAuthMiddleware, BookControllers.deleteDish);*/
 
 module.exports = router;
