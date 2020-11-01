@@ -16,7 +16,9 @@ const bookSchema = mongoose.Schema({
     weight: {type:Number}, 
     edition:{type:Number},
     author: {type:String},
+    publisher:{type:String},
     seller: {type:Schema.Types.ObjectId,ref:'admin'},
+
     countInStock: {
         type: Number,
         required: true,
@@ -25,7 +27,8 @@ const bookSchema = mongoose.Schema({
     //filters
     price: {type:Number, required: true},
     year:{type:Number,enum:[1,2,3,4]},
-    subject:{type:String,enum:["maths","english","physics","economics","chemistry",]}
+    subject:{type:String,enum:["maths","english","physics","economics","chemistry",]},
+    course:{type:String,enum:["Bsc","Bscom","Engg"]}
     
 });
 

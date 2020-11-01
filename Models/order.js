@@ -1,12 +1,18 @@
 const mongoose = require("mongoose");
 const Schema = mongoose.Schema;
-//var uniqueValidator = require('mongoose-unique-validator');
+
 const orderSchema = mongoose.Schema({
     //required feilds
 
     userId: { type: Schema.Types.ObjectId, required: true, ref: "user" },
     address: { type: Schema.Types.ObjectId, required: true, ref: "address" },
-    pickupaddress:{ type: Schema.Types.ObjectId, required: true, ref: "address" },
+    sellers:{
+      type:[
+        {
+          seller:{type:Schema.Types.ObjectId,ref:"admin"}
+        }
+      ]
+    },
     orderId: { type: Number, required: true },
     placedAt: { type: Date },
     placedBy: {
@@ -18,7 +24,7 @@ const orderSchema = mongoose.Schema({
     books: {
         type: [
           {
-            bookId: { type: Schema.Types.ObjectId, ref: "book" },
+            book: { type: Schema.Types.ObjectId, ref: "book" },
             quantity: { type: Number },
             billedPrice: { type: Number },
           },
@@ -65,7 +71,6 @@ const orderSchema = mongoose.Schema({
 
     //optional feilds
     remarks: { type: String },
-    assignDelivery: { type: Schema.Types.ObjectId, ref: "admin" },
     unDeliveredReason: { type: String },
     cancelledBy: { type: String, enum: ["admin", "user"] },
     cancelReason: { type: String },
@@ -77,5 +82,5 @@ const orderSchema = mongoose.Schema({
   }
 );
 
-//Schema.plugin(uniqueValidator);
+
 module.exports = mongoose.model("order", orderSchema);

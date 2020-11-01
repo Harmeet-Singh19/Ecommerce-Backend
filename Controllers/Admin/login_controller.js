@@ -119,7 +119,7 @@ const updateAdmin = async (req, res) => {
     });
     return res
       .status(200)
-      .json({ message: "Admin Roles updated.", data: admin });
+      .json({ message: "Admin Info updated.", data: admin });
   } catch (e) {
     console.log(e);
     return res.status(404).json({ message: "Internal Server Error." });
