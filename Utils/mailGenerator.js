@@ -52,6 +52,34 @@ const {email,name}=req.body
     .catch((error) => console.error(error));
 };
 
+const forgotPassword=(email,pass)=>{
+  console.log("mail")
+ 
+    // sign up the user .....
+
+    // then send the email
+    let response = {
+      body: {
+        name:"User",
+        intro: `This is your new password: ${pass}.`,
+        outro: 'If you think this email was sent by mistake, please ignore it!'
+      },
+    };
+  
+    let mail = MailGenerator.generate(response);
+  
+    let message = {
+      from: EMAIL,
+      to: email,
+      subject: "Forgot  Password!",
+      html: mail,
+    };
+  
+    transporter
+      .sendMail(message)
+      .catch((error) => console.error(error));
+}
+
 const getBill = (req, res) => {
   const { name, userEmail } = req.body;
 
@@ -90,4 +118,5 @@ const getBill = (req, res) => {
 module.exports = {
   signup,
   getBill,
+  forgotPassword
 };

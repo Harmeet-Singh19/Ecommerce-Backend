@@ -14,6 +14,7 @@ const getAllOrders = async (req, res) => {
       .populate("userId")
       .populate("address")
       .populate("books.book")
+      .populate("sellers.seller")
       .sort({ placedAt: -1 });
     res.status(200).json(allOrders);
   } catch (e) {

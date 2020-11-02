@@ -8,8 +8,9 @@ const userSchema = mongoose.Schema({
   phone: { type: Number },
   password: { type: String },
   googleId: { type: String },
-  facebookId: { type: String },
+  facebookId: { type: String }
 });
+
 //Schema.plugin(uniqueValidator);
 
 module.exports = mongoose.model("User", userSchema);

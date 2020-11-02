@@ -1,7 +1,8 @@
 const UserModel = require('../../models/user');
 const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
-const {signup,getBill}=require('../../Utils/mailGenerator')
+const {signup,forgotPassword}=require('../../Utils/mailGenerator')
+const generator=require("generate-password")
 
 async function register(req, res) {
   //required email,phone,password
@@ -58,6 +59,7 @@ async function login(req, res) {
     if (!user) {
       return res.status(201).json({ message: "User Not found!" });
     }
+   // console.log(req.body.password)
     const verify = bcrypt.compareSync(req.body.password, user.password);
     if (!verify) {
       return res.status(201).json({ message: "Incorrect Password or Email!" });
@@ -135,10 +137,49 @@ const updateUser = async (req, res) => {
   res.status(200).json({ message: "User Details was updated!", data: updatedUser });
 };
 
+const recover = (req, res) => {
+  try{
+    let user=UserModel.findOne({email: req.body.email},{name: 1, email: 1, phone: 1})
+
+    if (!user) return res.status(401).json({message: 'The email address ' + req.body.email + ' is not associated with any account. Double-check your email address and try again.'});
+
+    var newpassword = generator.generate({
+      length: 10,
+      numbers: true
+  });
+  //console.log(user)
+  
+  const salt = bcrypt.genSaltSync(10);
+  const hashedPassword = bcrypt.hashSync(newpassword, salt);
+ // console.log(newpassword)
+  let newuser=UserModel.updateOne({email:req.body.email},{password:hashedPassword},function(
+    err,
+    result
+  ) {
+    if (err) {
+      res.send(err);
+    } else {
+      forgotPassword(req.body.email,newpassword)
+     res.status(200).json({message:"updated"})
+    }
+  })
+  //console.log(user)
+   // forgotPassword(req.body.email,newpassword)
+    //res.status(200).json({message:"updated"})
+  }
+  catch(e){
+    console.log(e)
+    res.status(400).json({message:"Internal Server Error."})
+  }
+  };
+
+
+
 module.exports = {
   login,
   register,
   googleAuth,
   facebookAuth,
   updateUser,
+  recover
 };
