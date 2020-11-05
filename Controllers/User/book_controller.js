@@ -39,6 +39,7 @@ const Enums =require("../../Utils/enums")
               $options: 'i',
             },
         })
+        .populate('seller')
         }
         else{
           var result =await BookModel.find({
@@ -46,6 +47,7 @@ const Enums =require("../../Utils/enums")
               subject:{$in:[...subject]},
               course:{$in:[...course]}
           })
+          .populate('seller')
         }
           res.status(200).send(result)
       }
@@ -57,7 +59,6 @@ const Enums =require("../../Utils/enums")
 
 
   module.exports={
-      
       getBookById,
       queryBook
   }

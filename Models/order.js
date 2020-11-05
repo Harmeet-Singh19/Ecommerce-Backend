@@ -4,8 +4,8 @@ const Schema = mongoose.Schema;
 const orderSchema = mongoose.Schema({
     //required feilds
 
-    userId: { type: Schema.Types.ObjectId, required: true, ref: "user" },
-    address: { type: Schema.Types.ObjectId, required: true, ref: "address" },
+    userId: { type: Schema.Types.ObjectId, required: true, ref: 'user' },
+    address: { type: Schema.Types.ObjectId, required: true, ref: 'address' },
     sellers:{
       type:[
         {

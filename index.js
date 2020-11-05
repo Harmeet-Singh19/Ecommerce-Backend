@@ -29,6 +29,8 @@ mongoose
   .then(
     () => {
       console.log("Connected to database");
+      app.use("/api/admin", AdminRoutes);
+  app.use("/api/user", UserRoutes);
     },
     (err) => {
       console.log(err);
@@ -36,8 +38,7 @@ mongoose
     }
   );
 
-  app.use("/api/admin", AdminRoutes);
-  app.use("/api/user", UserRoutes);
+  
 
 
 //working check
