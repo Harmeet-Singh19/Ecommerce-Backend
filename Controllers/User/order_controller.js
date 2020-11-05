@@ -53,13 +53,18 @@ const placeOrder = async (req, res) => {
     }
 
     //fetch prices
+    //console.log(req.body.books)
+    
     let books = req.body.books;
     let orderedBooksSet = new Set();
     
     books.map((item) => {
-     orderedBooksSet.add(item._id)
+     orderedBooksSet.add(item.book._id)
+
     });
     const orderedBooksId = Array.from(orderedBooksSet);
+    //console.log(orderedBooksId)
+    
     const orderedBooksDetail = await BookModel.find({
       _id: { $in: orderedBooksId },
     }).select("price");
@@ -67,7 +72,7 @@ const placeOrder = async (req, res) => {
     orderedBooksDetail.map((book) => {
       priceMap[book._id] = book.price;
     });
-
+   
     //order object
     let order = {
       books: [],
@@ -76,42 +81,47 @@ const placeOrder = async (req, res) => {
 
     //price validations
     let calculatedOriginalBill = 0;
-
-    books.map((item) => {
+    let check= []
+    books.map(async(item) => {
 
         order.books.push({
-          book: item._id,
+          book: item.book._id,
           quantity: item.quantity,
-          billedPrice: priceMap[item._id],
+          billedPrice: priceMap[item.book._id],
         });
-        calculatedOriginalBill += priceMap[item._id] * item.quantity;
-        order.sellers.push(
-          item.seller
+        calculatedOriginalBill += priceMap[item.book._id] * item.quantity;
+        if(check.indexOf(item.book.seller)===-1){
+        order.sellers.push({
+          seller:item.book.seller
+        })
+      check.push(item.book.seller)
+      }
+        
+        let newInstock=item.book.countInStock-item.quantity
+        let nbook=await BookModel.findOneAndUpdate(
+          {_id:item.book._id},
+          {countInStock:newInstock},
+          {new:true}
         )
-        let newInStock=item.newInStock
-        let obook=BookModel.findById(item._id)
-        obook.countInStock=newInStock
-        let nbook=BookModel.findByIdAndUpdate(
-          item._id,
-          obook
-        )
-        console.log(nbook)
+       // console.log(nbook.countInStock)
     });
+    
     calculatedOriginalBill = parseFloat(calculatedOriginalBill.toFixed(2));
     //originalBill checkpoint
     //1 point margin for roundff fluctuations
+    
     if (Math.abs(calculatedOriginalBill - +req.body.originalBill) > 1) {
       return res
         .status(404)
         .json({ message: "Invalid Order Request.(Price Mismatch)" });
     }
     order.originalAmount = calculatedOriginalBill;
-
+    
     //bill amount validation
-    let billAmount = +calculatedOriginalBill;
+    let billAmount = calculatedOriginalBill;
    
-    billAmount = parseFloat(billAmount.toFixed(2));
-
+    order.billAmount = parseFloat(billAmount.toFixed(2));
+    
     //finalBill validations
     order.finalAmount = parseFloat(
       (order.billAmount + 29 + order.billAmount * 0.05).toFixed(2)
@@ -121,9 +131,9 @@ const placeOrder = async (req, res) => {
         .status(404)
         .json({ message: "Invalid Order Request.(Billing irregularities)" });
     }*/
-
+    
     order.userId = req.userData._id;
-    order.address = req.body.address;
+    order.address = "5f9e5c70d328b79764d6bd40";
     order.orderId = getCode();
     order.placedAt = Date.now();
     order.paymentMode = req.body.paymentMode;

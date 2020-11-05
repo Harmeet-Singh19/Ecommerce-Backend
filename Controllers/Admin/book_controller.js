@@ -20,8 +20,8 @@ const addImage = async (req, res) => {
     //required->dish
     try {
       const admin = await AdminModel.findById(req.userData._id);
-     console.log(admin)
-     console.log(req.body)
+     //console.log(admin)
+    // console.log(req.body)
 
       let newBook = new BookModel({ ...req.body });
       newBook = await newBook.save();

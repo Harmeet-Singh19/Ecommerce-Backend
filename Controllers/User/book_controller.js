@@ -28,7 +28,8 @@ const Enums =require("../../Utils/enums")
      // console.log(subject)
      // console.log(course)
       try{
-        if(req.query.keyword){
+       // console.log(req.query.keyword)
+        if(req.query.keyword!==''){
           var result =await BookModel.find({
             year:{$in:[...year]},
             subject:{$in:[...subject]},
