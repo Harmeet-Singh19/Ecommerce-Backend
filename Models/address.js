@@ -5,10 +5,9 @@ const AddressSchema = mongoose.Schema({
   userId: { type: Schema.Types.ObjectId, required: true },
   phone: { type: Number, required: true },
   state: { type: String, required: true },
-  lat: { type: Number, required: true },
-  lng: { type: Number, required: true },
   address: { type: String, required: true },
   pincode:{type:Number},
+  city:{type:String,required:true}
   
 
 });

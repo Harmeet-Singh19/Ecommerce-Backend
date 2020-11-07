@@ -18,11 +18,13 @@ const addAddress = async (req, res) => {
     if (
       !req.body.phone ||
       !req.body.state ||
-      !req.body.lat ||
-      !req.body.lng ||
+      !req.body.city ||
+      !req.body.pincode ||
       !req.body.address
-    )
+    ){
+      console.log("invalid")
       return res.status(440).json({ message: "Invalid request" });
+    }
     let newAddress = await AddressModel({
       ...req.body,
       userId: req.userData._id,

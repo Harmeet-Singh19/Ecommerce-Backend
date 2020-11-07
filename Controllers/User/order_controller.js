@@ -99,6 +99,10 @@ const placeOrder = async (req, res) => {
       }
         
         let newInstock=item.book.countInStock-item.quantity
+        if(newInstock<0){
+          let out=await BookModel.findById(item.book._id)
+          res.status(404).json({ message: "Order couldnt be placed. One or more items out of stock", data:out });
+        }
         let nbook=await BookModel.findOneAndUpdate(
           {_id:item.book._id},
           {countInStock:newInstock},
@@ -134,7 +138,7 @@ const placeOrder = async (req, res) => {
     }*/
     
     order.userId = req.userData._id;
-    order.address = "5f9e5c70d328b79764d6bd40";
+    order.address = req.body.address;
     order.orderId = getCode();
     order.placedAt = Date.now();
     order.paymentMode = req.body.paymentMode;
