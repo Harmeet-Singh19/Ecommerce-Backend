@@ -1,5 +1,5 @@
-const BookModel = require("../../models/book");
-const AdminModel = require("../../models/admin");
+const BookModel = require("../../Models/book");
+const AdminModel = require("../../Models/admin");
 const Enums =require("../../Utils/enums")
 
 

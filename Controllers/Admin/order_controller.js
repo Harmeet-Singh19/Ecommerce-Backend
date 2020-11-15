@@ -1,4 +1,4 @@
-const OrderModel = require("../../models/order");
+const OrderModel = require("../../Models/order");
 
 
 const getLiveOrders = async (req, res) => {

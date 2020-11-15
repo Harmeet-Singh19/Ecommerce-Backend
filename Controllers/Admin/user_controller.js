@@ -1,4 +1,4 @@
-const UserModel = require("../../models/user");
+const UserModel = require("../../Models/user");
 
 const converter = require("json-2-csv");
 const fs = require("fs");
