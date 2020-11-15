@@ -4,7 +4,7 @@ const app = express();
 const mongoose = require("mongoose");
 const cors = require("cors");
 const bodyParser = require("body-parser");
-const PORT = process.env.PORT;
+const PORT = process.env.PORT||4000;
 //ROUTES
 const AdminRoutes=require('./Routes/Admin/index')
 const UserRoutes=require('./Routes/User/index')
