@@ -148,7 +148,7 @@ const recover = (req, res) => {
       numbers: true
   });
   //console.log(user)
-  newpassword="pass123"
+ 
   const salt = bcrypt.genSaltSync(10);
   const hashedPassword = bcrypt.hashSync(newpassword, salt);
  // console.log(newpassword)
@@ -160,7 +160,7 @@ const recover = (req, res) => {
       res.send(err);
     } else {
       forgotPassword(req.body.email,newpassword)
-     res.status(200).json({message:"updated"})
+     res.status(200).json({message:"updated",data:newuser})
     }
   })
   //console.log(user)
