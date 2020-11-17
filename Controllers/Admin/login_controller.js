@@ -108,7 +108,7 @@ const getAllVendors = async (req, res) => {
       {
         isVendor:true
       },
-      { name: 1, email: 1, phone: 1, isVendor: 1 }
+      { name: 1, email: 1, phone: 1, isVendor: 1,address:1 }
     );
     return res.status(200).send(allVendors);
   } catch (e) {
