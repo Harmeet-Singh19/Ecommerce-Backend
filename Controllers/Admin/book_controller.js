@@ -9,6 +9,7 @@ const addImage = async (req, res) => {
       req.files.map((file,index)=>{
           links.push(file.location)
       })
+    // console.log(req.body)
       res.status(200).json({message:"successful",images:links})
     } catch (e) {
       console.log(e);

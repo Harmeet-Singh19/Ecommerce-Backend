@@ -17,18 +17,20 @@ const Enums =require("../../Utils/enums")
 
   const queryBook=async(req,res)=>{
       let {yearEnum,subjectEnum,courseEnum}=Enums;
-      let {year,subject,course}=req.body;
+      let year=[]
+      let subject=[]
+      let course=[]
       //console.log(req.body)
-      if (year.length===0) year=yearEnum
-      if(subject.length===0) subject=subjectEnum
-      if(course.length===0) course=courseEnum
+      year=yearEnum
+ subject=["physics"]
+      course=courseEnum
      
 
      // console.log(year)
      // console.log(subject)
      // console.log(course)
       try{
-       // console.log(req.query.keyword)
+        //console.log(req.query.keyword)
         if(req.query.keyword!==''){
           var result =await BookModel.find({
             year:{$in:[...year]},
@@ -49,6 +51,7 @@ const Enums =require("../../Utils/enums")
           })
           .populate('seller')
         }
+        console.log(result)
           res.status(200).send(result)
       }
       catch{

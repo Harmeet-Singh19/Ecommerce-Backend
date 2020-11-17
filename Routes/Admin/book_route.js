@@ -4,7 +4,7 @@ const BookControllers = require("../../Controllers/Admin/book_controller");
 const AdminAuthMiddleware = require("../../Middlewares/admin_auth");
 const upload = require("../../Middlewares/multer");
 
-router.post("/image/add",AdminAuthMiddleware,upload.array("multi-files", 10),BookControllers.addImage)
+router.post("/image/add",AdminAuthMiddleware,upload.array("file", 10),BookControllers.addImage)
 router.post("/add", AdminAuthMiddleware, BookControllers.addBook);
 router.get("/", AdminAuthMiddleware, BookControllers.getAllBooks);
 router.get("/:id", AdminAuthMiddleware, BookControllers.getBookById);
@@ -14,7 +14,7 @@ router.delete("/:id", AdminAuthMiddleware, BookControllers.deleteBook);
 router.post(
   "/image/:id",
   AdminAuthMiddleware,
-  upload.array("multi-files", 10),
+  upload.array("file", 10),
   BookControllers.updateImage
 );
 

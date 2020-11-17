@@ -28,7 +28,7 @@ const bookSchema = mongoose.Schema({
     price: {type:Number, required: true},
     year:{type:Number,enum:[1,2,3,4]},
     subject:{type:String,enum:["maths","english","physics","economics","chemistry",]},
-    course:{type:String,enum:["Bsc","Bscom","Engg"]}
+    course:{type:String,enum:["Bsc","Bscom","Engg","Bcom"]}
     
 });
 
