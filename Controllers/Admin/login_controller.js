@@ -13,7 +13,8 @@ async function newAdmin(req, res) {
       !req.body.phone ||
       !req.body.password ||
       !req.body.name ||
-      !req.body.isVendor
+      !req.body.isVendor ||
+      !req.body.isStudentVendor
     ) {
       return res.status(404).json({
         message: "Please send all required feilds.",
@@ -44,6 +45,7 @@ async function newAdmin(req, res) {
       phone: req.body.phone,
       password: hashedPassword,
       isVendor: req.body.isVendor,
+      isStudentVendor:req.body.isStudentVendor
     });
     await newAdmin.save();
     return res.status(200).json({ message: "Admin added.." });
@@ -62,7 +64,8 @@ async function login(req, res) {
       });
     }
     let admin,
-      isVendor = false;
+      isVendor = false,
+      isStudentVendor=false;
     if (Number(req.body.cred)) {
       admin = await AdminModel.findOne({ phone: Number(req.body.cred) });
     } else {
@@ -77,11 +80,12 @@ async function login(req, res) {
     }
     const token = await jwt.sign({ _id: admin._id }, process.env.ADMIN_JWT_SECRET);
     if (admin.isVendor===true) isVendor = true;
+    if (admin.isStudentVendor===true) isStudentVendor = true;
     return res
       .status(200)
       .json({
         message: "Login Succesfull",
-        data: { admin, token, isVendor},
+        data: { admin, token, isStudentVendor},
       });
   } catch (e) {
     console.log(e);
