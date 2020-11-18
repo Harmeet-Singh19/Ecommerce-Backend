@@ -5,6 +5,6 @@ const AdminAuthMiddleware = require("../../Middlewares/admin_auth");
 
 router.get("/",AdminAuthMiddleware, UserController.getAllUsers);
 // router.get("/migrate", UserController.migrate);
-router.get("/downloadusers",AdminAuthMiddleware, UserController.downloadCSV);
+router.get("/downloadusers", UserController.downloadCSV);
 
 module.exports = router;

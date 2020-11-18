@@ -83,26 +83,7 @@ const getAllBooks = async (req, res) => {
   }
   const deleteBook = async (req, res) => {
     try {
-      
-      /*const usages = await Promise.all([
-        OrderModel.find({
-          dishes: { $elemMatch: { dishRef: req.params.id } },
-        }).countDocuments(),
-        FixedSetModel.find({ dishes: { $in: [req.params.id] } }).countDocuments(),
-        GoalSetDayModel.find({
-          dishes: { $in: [req.params.id] },
-        }).countDocuments(),
-      ]);
-      if (usages[0] !== 0 || usages[1] !== 0 || usages[2] !== 0) {
-        return res.status(404).json({
-          message: "Can not delete this dish. Deactivate it to stop orders",
-          usageStats: {
-            orders: usages[0],
-            fixedSet: usages[1],
-            goalSet: usages[2],
-          },
-        });
-      }*/
+   
       await BookModel.findByIdAndDelete(req.params.id);
       res.status(200).json({ message: "Book Deleted" });
     } catch (e) {
