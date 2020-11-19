@@ -1,6 +1,32 @@
 const OrderModel = require("../../Models/order");
+const BookModel = require("../../Models/book");
 
 
+const getCountOfBooksSold=async(req,res)=>{
+  try{
+    const usages = await Promise.all([
+      OrderModel.find({
+        books: { $elemMatch: { book: req.body.bookId } },
+      }).countDocuments(),
+      OrderModel.find({
+        books: { $elemMatch: { book: req.body.bookId } },
+      })
+      .populate("userId")
+      .populate("address")
+      .populate("books.book")
+      .populate("sellers.seller")
+      .sort({ placedAt: -1 })
+    ]);
+   
+   // console.log(usages[0])
+    //console.log(orders)
+    res.status(200).json({message:"Succes",data:{usages}})
+  }
+  catch(e){
+    console.log(e);
+    res.status(404).json({ message: "Internal server error." });
+  }
+}
 const getLiveOrders = async (req, res) => {
   try {
     
@@ -194,5 +220,6 @@ module.exports = {
   markUnDelivered,
   getLiveDeliveries,
   getDelivered,
-  getOrdersByVendor
+  getOrdersByVendor,
+  getCountOfBooksSold
 };

@@ -4,6 +4,7 @@ const OrderController = require("../../Controllers/Admin/order_controller");
 const AdminAuthMiddleWare = require("../../Middlewares/admin_auth");
 
 router.get("/live/orders", AdminAuthMiddleWare, OrderController.getLiveOrders);
+router.get("/book", AdminAuthMiddleWare, OrderController.getCountOfBooksSold);
 router.get(
   "/history/orders",
   AdminAuthMiddleWare,
