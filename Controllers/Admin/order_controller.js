@@ -66,7 +66,7 @@ const getOrderHistory = async (req, res) => {
   try {
     
     let allOrders = await OrderModel.find({
-      orderStatus: { $in: ["delivered", "cancelled", "undelivered"] },
+      orderStatus: { $in: ["delivered", "cancelled", "undelivered","refunded"] },
     })
     .populate("userId")
     .populate("address")
