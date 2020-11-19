@@ -81,6 +81,21 @@ const getAllBooks = async (req, res) => {
       res.status(404).json({ message: "Internal server error." });
     }
   }
+  const changeActiveStatus=async(req,res)=>{
+    try{
+      let book = await BookModel.findByIdAndUpdate(
+        req.params.id,
+        { isLive: req.body.isLive },
+        { new: true }
+      );
+      res.status(200).json({ message: "Book updated..", data: book });
+    }
+    catch(e){
+      console.log(e);
+      res.status(404).json({ message: "Internal server error." });
+    }
+    }
+  }
   const deleteBook = async (req, res) => {
     try {
    
@@ -124,5 +139,6 @@ const getAllBooks = async (req, res) => {
       modifyBook,
       deleteBook,
       updateImage,
-      getBookByVendor
+      getBookByVendor,
+      changeActiveStatus
   }

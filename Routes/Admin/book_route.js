@@ -10,7 +10,7 @@ router.get("/", AdminAuthMiddleware, BookControllers.getAllBooks);
 router.get("/:id", AdminAuthMiddleware, BookControllers.getBookById);
 router.get("/vendor/:id", AdminAuthMiddleware, BookControllers.getBookByVendor);
 router.put("/:id", AdminAuthMiddleware, BookControllers.modifyBook);
-router.delete("/:id", AdminAuthMiddleware, BookControllers.deleteBook);
+router.delete("/:id", AdminAuthMiddleware, BookControllers.changeActiveStatus);
 router.post(
   "/image/:id",
   AdminAuthMiddleware,
