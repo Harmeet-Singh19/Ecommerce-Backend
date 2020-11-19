@@ -94,7 +94,7 @@ const getAllBooks = async (req, res) => {
       console.log(e);
       res.status(404).json({ message: "Internal server error." });
     }
-    }
+    
   }
   const deleteBook = async (req, res) => {
     try {
