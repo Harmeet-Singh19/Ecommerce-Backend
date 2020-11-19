@@ -6,10 +6,10 @@ const getCountOfBooksSold=async(req,res)=>{
   try{
     const usages = await Promise.all([
       OrderModel.find({
-        books: { $elemMatch: { book: req.body.bookId } },
+        books: { $elemMatch: { book: req.params.id } },
       }).countDocuments(),
       OrderModel.find({
-        books: { $elemMatch: { book: req.body.bookId } },
+        books: { $elemMatch: { book: req.params.id } },
       })
       .populate("userId")
       .populate("address")
@@ -17,9 +17,20 @@ const getCountOfBooksSold=async(req,res)=>{
       .populate("sellers.seller")
       .sort({ placedAt: -1 })
     ]);
+    let quantity=0;
+    for( let i=0;i<usages[0];i++){
+     let order=usages[1][i].books
+     let idx=order.findIndex((i)=>{
+      // console.log(i.book._id==req.params.id)
+      return( i.book._id==req.params.id)
+     })
+    // console.log(idx)
+     quantity+=order[idx].quantity
+    }
+    usages[0]=quantity
    
    // console.log(usages[0])
-    //console.log(orders)
+    //console.log(req.body.bookId)
     res.status(200).json({message:"Succes",data:{usages}})
   }
   catch(e){
