@@ -4,6 +4,7 @@ const app = express();
 const mongoose = require("mongoose");
 const cors = require("cors");
 const bodyParser = require("body-parser");
+const mongoSantize=require("express-mongo-sanitize")
 const PORT = process.env.PORT||4000;
 //ROUTES
 const AdminRoutes=require('./Routes/Admin/index')
@@ -14,6 +15,7 @@ app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 app.set("port", PORT);
 app.use(cors());
+app.use(mongoSantize())
 
 var server = app.listen(PORT, () => {
   console.log("server listening at " + PORT);
