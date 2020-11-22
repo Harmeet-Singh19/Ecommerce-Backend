@@ -38,6 +38,33 @@ const getCountOfBooksSold=async(req,res)=>{
     res.status(404).json({ message: "Internal server error." });
   }
 }
+
+const getOrdersByVendor=async(req,res)=>{
+  try{
+    const usages = await Promise.all([
+      OrderModel.find({
+        sellers: { $elemMatch: { seller: req.params.id } },
+      }).countDocuments(),
+      OrderModel.find({
+        sellers: { $elemMatch: { seller: req.params.id } },
+      })
+      .populate("userId")
+      .populate("address")
+      .populate("books.book")
+      .populate("sellers.seller")
+      .sort({ placedAt: -1 })
+    ]);
+    
+   
+   // console.log(usages[0])
+    //console.log(req.body.bookId)
+    res.status(200).json({message:"Succes",data:{usages}})
+  }
+  catch(e){
+    console.log(e);
+    res.status(404).json({ message: "Internal server error." });
+  }
+}
 const getLiveOrders = async (req, res) => {
   try {
     
@@ -200,24 +227,7 @@ const getDelivered = async (req, res) => {
   }
 };
 
-const getOrdersByVendor =async(req,res)=>{
-    try{
-    let orders=await OrderModel.find({
-        sellers: req.params.id
-    })
-    .populate("userId")
-    .populate("address")
-    .populate("books.book")
-    .populate("sellers.seller")
-      .sort({ placedAt: -1 });
-    console.log(orders)
-    res.status(200).send(orders)
-}
-catch(e){
-    console.log(e)
-    res.status(404).json({message:"Internal server error"})
-}
-}
+
 
 
 
