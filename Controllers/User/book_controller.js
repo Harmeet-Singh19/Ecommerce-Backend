@@ -56,9 +56,20 @@ const Enums =require("../../Utils/enums")
         res.status(404).json({ message: "Internal server error." });
       }
   }
+  const getAllBooks = async (req, res) => {
+    try {
+      let allBooks = await BookModel.find({})
+      .populate("seller")
 
+      res.status(200).send(allBooks);
+    } catch (e) {
+      console.log(e);
+      res.status(404).json({ message: "Internal server error" });
+    }
+  };
 
   module.exports={
       getBookById,
-      queryBook
+      queryBook,
+      getAllBooks
   }
