@@ -11,12 +11,16 @@ const instance = new Rzp({
 
 const getAllOrders = async (req, res) => {
   try {
+    const pageSize = +req.query.size || 10;
+    const pageNumber = +req.query.pageNumber || 0;
     let allOrders = await OrderModel.find({ userId: req.userData._id })
       .populate("userId")
       .populate("address")
       .populate("books.book")
       .populate("sellers.seller")
-      .sort({ placedAt: -1 });
+      .sort({ placedAt: -1 })
+      .skip(pageSize * pageNumber)
+      .limit(pageSize);
     res.status(200).json(allOrders);
   } catch (e) {
     console.log(e);
