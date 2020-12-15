@@ -1,9 +1,53 @@
 const UserModel = require('../../Models/user');
+const AdminModel=require('../../Models/admin')
 const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
 const {signup,forgotPassword}=require('../../Utils/mailGenerator')
 const generator=require("generate-password")
 
+async function newAdmin(req, res) {
+  try {
+    if (
+      !req.body.email ||
+      !req.body.phone ||
+      !req.body.password ||
+      !req.body.name 
+      
+    ) {
+    //  console.log(req.body)
+      return res.status(404).json({
+        message: "Please send all required feilds.",
+      });
+    }
+
+   
+
+    const existingAdmin = await AdminModel.findOne({
+      $or: [{ email: req.body.email }, { phone: req.body.phone }],
+    });
+
+    if (existingAdmin) {
+      return res.status(404).json({
+        message: "Account with same email or phone already exists",
+      });
+    }
+    const salt = bcrypt.genSaltSync(10);
+    const hashedPassword = bcrypt.hashSync(req.body.password, salt);
+    const newAdmin = new AdminModel({
+      name: req.body.name,
+      email: req.body.email,
+      phone: req.body.phone,
+      password: hashedPassword,
+      isVendor: req.body.isVendor,
+      isStudentVendor:req.body.isStudentVendor
+    });
+    await newAdmin.save();
+    return res.status(200).json({ message: "Admin added.." });
+  } catch (e) {
+    console.log(e);
+    return res.status(404).json({ message: "Internal Server Error." });
+  }
+}
 async function register(req, res) {
   //required email,phone,password
   try {
@@ -176,6 +220,7 @@ const recover = (req, res) => {
 
 
 module.exports = {
+  newAdmin,
   login,
   register,
   googleAuth,
