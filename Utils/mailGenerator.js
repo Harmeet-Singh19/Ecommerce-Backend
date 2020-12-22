@@ -20,7 +20,9 @@ let MailGenerator = new Mailgen({
   product: {
     name: "DUBooksEx",
     link: MAIN_URL,
-    logo:'https://i.ibb.co/GWBKTFW/DU.png'
+    logo:'https://i.ibb.co/C5hs0qb/logo.png',
+    logoHeight: '60px',
+    copyright: 'Copyright © 2020 DUBooksEX. All rights reserved.',
   },
 });
 
@@ -80,23 +82,48 @@ const forgotPassword=(email,pass)=>{
       .catch((error) => console.error(error));
 }
 
-const getBill = (req, res) => {
-  const { name, userEmail } = req.body;
+const getBill = (res) => {
+  const { name, email } = res.userId;
 
+  console.log(res)
   let response = {
     body: {
       name,
-      intro: "Your bill has arrived!",
+      intro: "Your order was placed successfully!",
+      
+     
+    action: {
+      instructions: 'Check the status of your order in your account.',
+      button: {
+          // Optional action button color
+          text: 'Go to Order History',
+          link: 'https://du-book-ex.herokuapp.com/profile'
+      }
+  },
+      outro: "We thank you for your purchase.",
       table: {
         data: [
-          {
-            item: "MERN stack book",
-            description: "A mern stack book",
-            price: "$10.99",
-          },
+            {
+                OrderId: `#${res.orderId}`,
+                Total: `₹ ${res.finalAmount}`,
+                Address:`${res.address.address},${res.address.city},${res.address.state},${res.address.phone}`
+            },
+           
         ],
-      },
-      outro: "Looking forward to do more business with you",
+        columns: {
+            // Optionally, customize the column widths
+            customWidth: {
+                orderId: '25%',
+                Total: '20%',
+                Address:'55%'
+            },
+            // Optionally, change column text alignment
+            customAlignment: {
+                Address: 'right'
+            }
+        }
+    },
+      signature: false,
     },
   };
 
@@ -104,10 +131,11 @@ const getBill = (req, res) => {
 
   let message = {
     from: EMAIL,
-    to: userEmail,
-    subject: "transaction",
+    to: email,
+    subject: "Successful Transaction",
     html: mail,
   };
+
 
   transporter
     .sendMail(message)

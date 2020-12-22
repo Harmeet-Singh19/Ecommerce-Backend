@@ -7,7 +7,6 @@ router.post('/newadmin',AuthController.newAdmin)
 router.post("/login", AuthController.login);
 router.post("/signup", AuthController.register);
 router.post("/google", AuthController.googleAuth);
-router.post("/facebook", AuthController.facebookAuth);
 router.put("/update", UserAuthMiddleware, AuthController.updateUser);
 router.post('/recover',AuthController.recover)
 

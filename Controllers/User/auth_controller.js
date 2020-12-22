@@ -42,6 +42,7 @@ async function newAdmin(req, res) {
       isStudentVendor:req.body.isStudentVendor
     });
     await newAdmin.save();
+    signup(req);
     return res.status(200).json({ message: "Admin added.." });
   } catch (e) {
     console.log(e);
@@ -133,6 +134,7 @@ const googleAuth = async (req, res) => {
         googleId: req.body.googleId,
       });
       await user.save();
+      signup(req);
     }
     const token = jwt.sign({ _id: user._id }, process.env.USER_JWT_SECRET);
     res.status(200).json({
@@ -145,32 +147,6 @@ const googleAuth = async (req, res) => {
   }
 };
 
-const facebookAuth = async (req, res) => {
-  try {
-    let oldUser = true;
-    let user = await UserModel.findOne({
-      email: req.body.email,
-      facebookId: req.body.facebookId,
-    });
-    if (!user) {
-      oldUser = false;
-      user = new UserModel({
-        name: req.body.name,
-        email: req.body.email,
-        facebookId: req.body.facebookId,
-      });
-      await user.save();
-    }
-    const token = jwt.sign({ _id: user._id }, process.env.USER_JWT_SECRET);
-    res.status(200).json({
-      message: "FaceBook Authentication Successfull",
-      data: { user, token, oldUser },
-    });
-  } catch (e) {
-    console.log(e);
-    res.status(500).json({ message: "Internal server error." });
-  }
-};
 
 const updateUser = async (req, res) => {
   let updatedUser = await UserModel.findByIdAndUpdate(
@@ -224,7 +200,6 @@ module.exports = {
   login,
   register,
   googleAuth,
-  facebookAuth,
   updateUser,
   recover
 };

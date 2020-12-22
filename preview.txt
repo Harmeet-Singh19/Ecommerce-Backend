@@ -1,0 +1,12 @@
+Hi savgun,
+
+Your order was placed successfully!        
+
+Check the status of your order in your account.        
+https://du-book-ex.herokuapp.com/profile        
+
+We thank you for your purchase.        
+
+
+
+Copyright © 2020 DUBooksEX. All rights reserved.

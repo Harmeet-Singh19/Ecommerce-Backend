@@ -3,7 +3,7 @@ const BookModel = require("../../Models/book");
 const UserModel=require('../../Models/user')
 const crypto = require("crypto");
 const Rzp = require("razorpay");
-
+const {getBill}=require('../../Utils/mailGenerator')
 const instance = new Rzp({
   key_id: process.env.RZP_ID,
   key_secret: process.env.RZP_SECRET,
@@ -204,7 +204,11 @@ const verifyOrder = async (req, res) => {
         onlinePaymentStatus: "success",
       },
       { new: true }
-    );
+    )
+    .populate('userId')
+    .populate("address")
+    .populate("books.book");
+    getBill(sucessOrder)
     res.status(200).json({ message: "Order Placed", sucessOrder });
   
   } catch (e) {
