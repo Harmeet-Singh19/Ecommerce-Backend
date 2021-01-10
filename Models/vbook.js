@@ -17,7 +17,8 @@ const bookSchema = mongoose.Schema({
     edition:{type:Number},
     author: {type:String},
     publisher:{type:String},
-   
+    seller: {type:Schema.Types.ObjectId,ref:'admin'},
+
     countInStock: {
         type: Number,
         required: true,
@@ -28,10 +29,10 @@ const bookSchema = mongoose.Schema({
     year:{type:Number,enum:[1,2,3,4]},
     subject:{type:String,enum:["maths","english","physics","economics","chemistry",]},
     course:{type:String,enum:["Bsc","Bscom","Engg","Bcom"]},
-    isLive:{type:Boolean,default:true},
-    hand:{type:Number,enum:[1,2]}
+    hand:{type:Number,enum:[1,2]},
+    uploadAt:{type:Date}
     
 });
 
 //Schema.plugin(uniqueValidator);
-module.exports = mongoose.model("book", bookSchema);
+module.exports = mongoose.model("vbook", bookSchema);

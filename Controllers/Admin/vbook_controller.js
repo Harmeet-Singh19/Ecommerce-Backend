@@ -1,4 +1,4 @@
-const BookModel = require("../../Models/book");
+const BookModel = require("../../Models/vbook");
 const AdminModel = require("../../Models/admin");
 
 const addImage = async (req, res) => {
@@ -23,6 +23,7 @@ const addImage = async (req, res) => {
       const admin = await AdminModel.findById(req.userData._id);
      //console.log(admin)
     // console.log(req.body)
+    req.body.uploadAt=Date.now();
 
       let newBook = new BookModel({ ...req.body });
       newBook = await newBook.save();
@@ -54,7 +55,16 @@ const getAllBooks = async (req, res) => {
       res.status(404).json({ message: "Internal server error" });
     }
   };
-  
+  const getBookByVendor = async (req, res) => {
+    try {
+      let allBooks = await BookModel.find({ seller: req.params.id })
+      .populate("seller")
+      res.status(200).send(allBooks);
+    } catch (e) {
+      console.log(e);
+      res.status(404).json({ message: "Internal server error" });
+    }
+  };
 
   async function modifyBook(req, res) {
     //required->dish,dishId
@@ -72,21 +82,7 @@ const getAllBooks = async (req, res) => {
       res.status(404).json({ message: "Internal server error." });
     }
   }
-  const changeActiveStatus=async(req,res)=>{
-    try{
-      let book = await BookModel.findByIdAndUpdate(
-        req.params.id,
-        { isLive: req.body.isLive },
-        { new: true }
-      );
-      res.status(200).json({ message: "Book updated..", data: book });
-    }
-    catch(e){
-      console.log(e);
-      res.status(404).json({ message: "Internal server error." });
-    }
-    
-  }
+  
   const deleteBook = async (req, res) => {
     try {
    
@@ -130,6 +126,6 @@ const getAllBooks = async (req, res) => {
       modifyBook,
       deleteBook,
       updateImage,
-      
-      changeActiveStatus
+      getBookByVendor,
+     
   }
