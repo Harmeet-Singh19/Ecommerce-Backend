@@ -37,6 +37,7 @@ const getAllBooks = async (req, res) => {
     try {
       let allBooks = await BookModel.find({})
       .populate("seller")
+      .sort({ uploadAt: -1 });
 
       res.status(200).send(allBooks);
     } catch (e) {
@@ -59,6 +60,7 @@ const getAllBooks = async (req, res) => {
     try {
       let allBooks = await BookModel.find({ seller: req.params.id })
       .populate("seller")
+      .sort({ uploadAt: -1 });
       res.status(200).send(allBooks);
     } catch (e) {
       console.log(e);

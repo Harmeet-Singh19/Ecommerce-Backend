@@ -23,8 +23,8 @@ const getAllMails =async(req,res)=>{
     try{
         let allEmails = await EmailModel.find({})
       .populate("seller")
-      .populate("book");
-
+      .populate("book")
+      .sort({ date: -1 });
       res.status(200).send(allEmails);
     }
     catch(e){
