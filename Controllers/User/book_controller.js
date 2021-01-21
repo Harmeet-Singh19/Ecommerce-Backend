@@ -7,7 +7,7 @@ const Enums =require("../../Utils/enums")
   const getBookById = async (req, res) => {
     try {
       let allBooks = await BookModel.findOne({ _id: req.params.id })
-      .populate("seller")
+     
       res.status(200).send(allBooks);
     } catch (e) {
       console.log(e);
@@ -40,7 +40,8 @@ const Enums =require("../../Utils/enums")
             },
             
         })
-        .populate('seller')
+       
+       // console.log("first",result1)
         var result2=await BookModel.find({
           year:{$in:[...year]},
           course:{$in:[...course]},
@@ -51,8 +52,23 @@ const Enums =require("../../Utils/enums")
           },
           
       })
-      .populate('seller')
-      var result=result1+result2;
+      
+     // console.log("second",result2)
+      var result3=result1.concat(result2)
+      var result=[]
+      var uniqueid=[]
+      result3.forEach((t)=>{
+        let str=t._id
+        if(uniqueid.indexOf(str)===-1){
+          console.log(str)
+          
+          uniqueid.push(str);
+        //  console.log(uniqueid.indexOf(str))
+          result.push(t);
+        }
+      })
+    console.log(uniqueid)
+     // console.log("final",result)
         }
         else{
           var result =await BookModel.find({
@@ -60,7 +76,7 @@ const Enums =require("../../Utils/enums")
               course:{$in:[...course]},
               hand:{$in:[...hand]},
           })
-          .populate('seller')
+         
         }
           res.status(200).send(result)
       }
@@ -72,7 +88,7 @@ const Enums =require("../../Utils/enums")
   const getAllBooks = async (req, res) => {
     try {
       let allBooks = await BookModel.find({})
-      .populate("seller")
+     
 
       res.status(200).send(allBooks);
     } catch (e) {
