@@ -16,12 +16,12 @@ const Enums =require("../../Utils/enums")
   };
 
   const queryBook=async(req,res)=>{
-      let {yearEnum,subjectEnum,courseEnum}=Enums;
-      let {year,subject,course}=req.body;
+      let {yearEnum,courseEnum,handEnum}=Enums;
+      let {year,course,hand}=req.body;
       //console.log(req.body)
       if (year.length===0) year=yearEnum
-      if(subject.length===0) subject=subjectEnum
       if(course.length===0) course=courseEnum
+      if(hand.length===0) hand=handEnum
      
 
      // console.log(year)
@@ -30,22 +30,35 @@ const Enums =require("../../Utils/enums")
       try{
        // console.log(req.query.keyword)
         if(req.query.keyword!==''){
-          var result =await BookModel.find({
+          var result1 =await BookModel.find({
             year:{$in:[...year]},
-            subject:{$in:[...subject]},
             course:{$in:[...course]},
+            hand:{$in:[...hand]},
             name: {
               $regex: req.query.keyword,
               $options: 'i',
             },
+            
         })
         .populate('seller')
+        var result2=await BookModel.find({
+          year:{$in:[...year]},
+          course:{$in:[...course]},
+          hand:{$in:[...hand]},
+          subject: {
+            $regex: req.query.keyword,
+            $options: 'i',
+          },
+          
+      })
+      .populate('seller')
+      var result=result1+result2;
         }
         else{
           var result =await BookModel.find({
               year:{$in:[...year]},
-              subject:{$in:[...subject]},
-              course:{$in:[...course]}
+              course:{$in:[...course]},
+              hand:{$in:[...hand]},
           })
           .populate('seller')
         }

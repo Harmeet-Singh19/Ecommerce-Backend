@@ -26,7 +26,7 @@ const bookSchema = mongoose.Schema({
     //filters
     price: {type:Number, required: true},
     year:{type:Number,enum:[1,2,3,4]},
-    subject:{type:String,enum:["maths","english","physics","economics","chemistry",]},
+    subject:{type:String,required:true},
     course:{type:String,enum:["Bms","BcomH","BcomP","BaHEco","BaHEng","BaHPsy","BaHSoc","BscHSta","BscHMat"]},
     isLive:{type:Boolean,default:true},
     hand:{type:Number,enum:[1,2]}
