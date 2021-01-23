@@ -44,7 +44,14 @@ const Enums =require("../../Utils/enums")
               $regex: req.query.keyword,
               $options: 'i',
             }
-          }]
+            
+          },
+          {
+            'author': {
+              $regex: req.query.keyword,
+              $options: 'i',
+            }
+        ]
             
         },function(err,docs){
         //  console.log(docs.length)
