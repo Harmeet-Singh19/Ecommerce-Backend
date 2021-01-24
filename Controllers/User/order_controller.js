@@ -208,7 +208,7 @@ const verifyOrder = async (req, res) => {
     .populate('userId')
     .populate("address")
     .populate("books.book");
-    getBill(sucessOrder)
+   // getBill(sucessOrder)
     res.status(200).json({ message: "Order Placed", sucessOrder });
   
   } catch (e) {
