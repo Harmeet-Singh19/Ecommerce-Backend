@@ -18,11 +18,11 @@ let transporter = nodemailer.createTransport({
 let MailGenerator = new Mailgen({
   theme: "neopolitan",
   product: {
-    name: "DUBooksEx",
+    name: "DUBookX",
     link: MAIN_URL,
     logo:'https://i.ibb.co/C5hs0qb/logo.png',
     logoHeight: '60px',
-    copyright: 'Copyright © 2020 DUBooksEX. All rights reserved.',
+    copyright: 'Copyright © 2021 DUBookX. All rights reserved.',
   },
 });
 
@@ -35,7 +35,7 @@ const {email,name}=req.body
   let response = {
     body: {
       name,
-      intro: "Welcome to DuBooksEx! We're very excited to have you on board.",
+      intro: "Welcome to DuBookX! We're very excited to have you on board.",
       outro: 'Need help, or have questions? Just reply to this email, we\'d love to help.'
     },
   };
@@ -97,7 +97,7 @@ const getBill = (res) => {
       button: {
           // Optional action button color
           text: 'Go to Order History',
-          link: 'https://du-book-ex.herokuapp.com/profile'
+          link: 'https://dubookex.netlify.app/profile'
       }
   },
       outro: "We thank you for your purchase.",
@@ -142,36 +142,9 @@ const getBill = (res) => {
     
     .catch((error) => console.error(error));
 };
-const vendor = (em) => {
-  console.log("mail")
 
-// sign up the user .....
-
-// then send the email
-let response = {
-  body: {
-    name:em.seller.name,
-    intro: `Your book ${em.book.name} was sold. Qty: ${em.bookQty} Addr :${em.buyerAddr}`,
-    outro: 'Looking forward to do more business with you.'
-  },
-};
-
-let mail = MailGenerator.generate(response);
-
-let message = {
-  from: EMAIL,
-  to: em.seller.email,
-  subject: "Order Placed!",
-  html: mail,
-};
-
-transporter
-  .sendMail(message)
-  .catch((error) => console.error(error));
-};
 module.exports = {
   signup,
   getBill,
   forgotPassword,
-  vendor
 };
