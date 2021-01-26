@@ -66,7 +66,7 @@ const orderSchema = mongoose.Schema({
     originalAmount: { type: Number, required: true },
     billAmount: { type: Number, required: true },
     deliveryCharges: { type: Number },
-    gst: { type: Number, default: 5 },
+    gst: { type: Number, default: 0 },
     finalAmount: { type: Number, required: true },
 
     //optional feilds

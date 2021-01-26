@@ -4,6 +4,7 @@ const UserModel=require('../../Models/user')
 const crypto = require("crypto");
 const Rzp = require("razorpay");
 const {getBill}=require('../../Utils/mailGenerator')
+const rates =require('../../Utils/rates')
 const instance = new Rzp({
   key_id: process.env.RZP_ID,
   key_secret: process.env.RZP_SECRET,
@@ -131,13 +132,9 @@ const placeOrder = async (req, res) => {
     
     //finalBill validations
     order.finalAmount = parseFloat(
-      (order.billAmount + 29 + order.billAmount * 0.05).toFixed(2)
+      (order.billAmount + 30).toFixed(2)
     );
-    /*if (Math.abs(order.finalAmount - +req.body.finalAmount) > 1) {
-      return res
-        .status(404)
-        .json({ message: "Invalid Order Request.(Billing irregularities)" });
-    }*/
+
     
     order.userId = req.userData._id;
     order.address = req.body.address;
