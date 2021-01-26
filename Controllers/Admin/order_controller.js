@@ -122,7 +122,7 @@ const updateStatus = async (req, res) => {
     //console.log(statusUpdate)
     if(req.body.orderStatus==="confirmed"){
     
-    console.log(statusUpdate)
+   // console.log(statusUpdate)
     getBill(statusUpdate)
     }
     res.status(200).json({ message: "Status Updated", data: statusUpdate });
