@@ -1,7 +1,7 @@
 const data = require('../../Utils/rates');
 exports.sendData = async (req, res) => {
     try {
-        console.log("Hello")
+
         res.status(200).json({ message: "successfull", data: data })
     } catch (error) {
         console.log(error);
