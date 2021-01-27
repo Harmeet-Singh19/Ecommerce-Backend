@@ -59,7 +59,7 @@ const getAllBooks = async (req, res) => {
   async function modifyBook(req, res) {
     //required->dish,dishId
     try {
-     
+     delete req.body.image
       let updatedBook = await BookModel.findByIdAndUpdate(
         req.params.id,
         req.body,
@@ -104,6 +104,7 @@ const getAllBooks = async (req, res) => {
         req.files.map((file,index)=>{
             links.push(file.location)
         })
+       // console.log(req.files)
         const updatedBook = await BookModel.findByIdAndUpdate(
           req.params.id,
           {
