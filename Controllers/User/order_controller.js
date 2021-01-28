@@ -127,13 +127,11 @@ const placeOrder = async (req, res) => {
     
     //bill amount validation
     let billAmount = calculatedOriginalBill;
-   
+  
     order.billAmount = parseFloat(billAmount.toFixed(2));
     
     //finalBill validations
-    order.finalAmount = parseFloat(
-      (order.billAmount + 30).toFixed(2)
-    );
+    order.finalAmount = parseFloat(req.body.finalAmount);
 
     
     order.userId = req.userData._id;
