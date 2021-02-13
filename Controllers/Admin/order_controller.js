@@ -119,10 +119,10 @@ const updateStatus = async (req, res) => {
     .populate('userId')
     .populate("address")
     .populate("books.book");
-    //console.log(statusUpdate)
+    console.log(req.body.orderStatus)
     if(req.body.orderStatus==="confirmed"){
     
-   // console.log(statusUpdate)
+      console.log(req.body.orderStatus)
     getBill(statusUpdate)
     }
     res.status(200).json({ message: "Status Updated", data: statusUpdate });

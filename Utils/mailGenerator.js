@@ -139,7 +139,6 @@ const getBill = (res) => {
 
   transporter
     .sendMail(message)
-    
     .catch((error) => console.error(error));
 };
 
