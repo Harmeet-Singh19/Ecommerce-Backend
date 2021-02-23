@@ -38,9 +38,7 @@ async function newAdmin(req, res) {
         message: "Account with same email or phone already exists",
       });
     }
-    if(req.body.isVendor===true){
-      vendorsignup(req)
-    }
+   
     const salt = bcrypt.genSaltSync(10);
     const hashedPassword = bcrypt.hashSync(req.body.password, salt);
     const newAdmin = new AdminModel({
