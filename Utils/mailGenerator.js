@@ -53,6 +53,33 @@ const {email,name}=req.body
     .sendMail(message)
     .catch((error) => console.error(error));
 };
+const vendorsignup = (req) => {
+  console.log("mail")
+const {email,name}=req.body
+// sign up the user .....
+
+// then send the email
+let response = {
+  body: {
+    name,
+    intro: "Welcome to DuBookX! We're very excited to have you on board.",
+    outro: 'Need help, or have questions? Just reply to this email, we\'d love to help.'
+  },
+};
+
+let mail = MailGenerator.generate(response);
+
+let message = {
+  from: EMAIL,
+  to: email,
+  subject: "Successful Registration!",
+  html: mail,
+};
+
+transporter
+  .sendMail(message)
+  .catch((error) => console.error(error));
+};
 
 const forgotPassword=(email,pass)=>{
   console.log("mail")
@@ -168,10 +195,12 @@ transporter
   .sendMail(message)
   .catch((error) => console.error(error));
 };
+
 module.exports = {
   signup,
   getBill,
   forgotPassword,
-  vendor
+  vendor,
+  vendorsignup
 }; 
 
