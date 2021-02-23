@@ -39,7 +39,7 @@ async function newAdmin(req, res) {
       });
     }
     if(req.body.isVendor===true){
-      vendorsignup(req.body)
+      vendorsignup(req)
     }
     const salt = bcrypt.genSaltSync(10);
     const hashedPassword = bcrypt.hashSync(req.body.password, salt);
