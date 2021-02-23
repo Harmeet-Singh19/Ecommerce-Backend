@@ -141,9 +141,37 @@ const getBill = (res) => {
     .sendMail(message)
     .catch((error) => console.error(error));
 };
+const vendor = (em) => {
+  console.log("mail")
 
+// sign up the user .....
+
+// then send the email
+let response = {
+  body: {
+    name:em.seller.name,
+    intro: `Your book ${em.book.name} was sold. Qty: ${em.bookQty} Addr :${em.buyerAddr}`,
+    outro: 'Looking forward to do more business with you.'
+  },
+};
+
+let mail = MailGenerator.generate(response);
+
+let message = {
+  from: EMAIL,
+  to: em.seller.email,
+  subject: "Order Placed!",
+  html: mail,
+};
+
+transporter
+  .sendMail(message)
+  .catch((error) => console.error(error));
+};
 module.exports = {
   signup,
   getBill,
   forgotPassword,
-};
+  vendor
+}; 
+
