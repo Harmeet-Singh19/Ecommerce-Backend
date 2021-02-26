@@ -2,8 +2,9 @@ const UserModel = require('../../Models/user');
 const AdminModel = require('../../Models/admin')
 const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
-const { signup, forgotPassword } = require('../../Utils/mailGenerator')
+const { signup, forgotPassword, vendorsignup } = require('../../Utils/mailGenerator')
 const generator = require("generate-password")
+
 
 async function newAdmin(req, res) {
   try {
@@ -31,6 +32,7 @@ async function newAdmin(req, res) {
         message: "Account with same email or phone already exists",
       });
     }
+    vendorsignup(req);
     const salt = bcrypt.genSaltSync(10);
     const hashedPassword = bcrypt.hashSync(req.body.password, salt);
     const newAdmin = new AdminModel({

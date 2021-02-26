@@ -1,6 +1,7 @@
 const AdminModel = require("../../Models/admin");
 const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
+const {vendorsignup}=require('../../Utils/mailGenerator');
 
 async function verifyAdmin(req, res) {
   res.send(req.userData);
@@ -37,6 +38,7 @@ async function newAdmin(req, res) {
         message: "Account with same email or phone already exists",
       });
     }
+   
     const salt = bcrypt.genSaltSync(10);
     const hashedPassword = bcrypt.hashSync(req.body.password, salt);
     const newAdmin = new AdminModel({
@@ -49,6 +51,7 @@ async function newAdmin(req, res) {
     });
     await newAdmin.save();
     return res.status(200).json({ message: "Admin added.." });
+    
   } catch (e) {
     console.log(e);
     return res.status(404).json({ message: "Internal Server Error." });
