@@ -1,9 +1,9 @@
 const UserModel = require('../../Models/user');
-const AdminModel=require('../../Models/admin')
+const AdminModel = require('../../Models/admin')
 const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
-const {signup,forgotPassword}=require('../../Utils/mailGenerator')
-const generator=require("generate-password")
+const { signup, forgotPassword } = require('../../Utils/mailGenerator')
+const generator = require("generate-password")
 
 async function newAdmin(req, res) {
   try {
@@ -11,16 +11,16 @@ async function newAdmin(req, res) {
       !req.body.email ||
       !req.body.phone ||
       !req.body.password ||
-      !req.body.name 
-      
+      !req.body.name
+
     ) {
-    //  console.log(req.body)
+      //  console.log(req.body)
       return res.status(404).json({
         message: "Please send all required feilds.",
       });
     }
 
-   
+
 
     const existingAdmin = await AdminModel.findOne({
       $or: [{ email: req.body.email }, { phone: req.body.phone }],
@@ -39,7 +39,7 @@ async function newAdmin(req, res) {
       phone: req.body.phone,
       password: hashedPassword,
       isVendor: req.body.isVendor,
-      isStudentVendor:req.body.isStudentVendor
+      isStudentVendor: req.body.isStudentVendor
     });
     await newAdmin.save();
     signup(req);
@@ -104,7 +104,7 @@ async function login(req, res) {
     if (!user) {
       return res.status(201).json({ message: "User Not found!" });
     }
-   // console.log(req.body.password)
+    // console.log(req.body.password)
     const verify = bcrypt.compareSync(req.body.password, user.password);
     if (!verify) {
       return res.status(201).json({ message: "Incorrect Password or Email!" });
@@ -158,41 +158,40 @@ const updateUser = async (req, res) => {
 };
 
 const recover = (req, res) => {
-  try{
-    let user=UserModel.findOne({email: req.body.email},{name: 1, email: 1, phone: 1})
+  try {
+    let user = UserModel.findOne({ email: req.body.email }, { name: 1, email: 1, phone: 1 })
 
-    if (!user) return res.status(401).json({message: 'The email address ' + req.body.email + ' is not associated with any account. Double-check your email address and try again.'});
+    if (!user) return res.status(401).json({ message: 'The email address ' + req.body.email + ' is not associated with any account. Double-check your email address and try again.' });
 
     var newpassword = generator.generate({
       length: 10,
       numbers: true
-  });
-  //console.log(user)
- //newpassword='pass123'
-  const salt = bcrypt.genSaltSync(10);
-  const hashedPassword = bcrypt.hashSync(newpassword, salt);
- // console.log(newpassword)
-  let newuser=UserModel.updateOne({email:req.body.email},{password:hashedPassword},function(
-    err,
-    result
-  ) {
-    if (err) {
-      res.send(err);
-    } else {
-      forgotPassword(req.body.email,newpassword)
-     res.status(200).json({message:"updated"})
-    }
-  })
-  //console.log(user)
-   // forgotPassword(req.body.email,newpassword)
+    });
+    //console.log(user)
+    //newpassword='pass123'
+    const salt = bcrypt.genSaltSync(10);
+    const hashedPassword = bcrypt.hashSync(newpassword, salt);
+    // console.log(newpassword)
+    let newuser = UserModel.updateOne({ email: req.body.email }, { password: hashedPassword }, function (
+      err,
+      result
+    ) {
+      if (err) {
+        res.send(err);
+      } else {
+        forgotPassword(req.body.email, newpassword)
+        res.status(200).json({ message: "updated" })
+      }
+    })
+    //console.log(user)
+    // forgotPassword(req.body.email,newpassword)
     //res.status(200).json({message:"updated"})
   }
-  catch(e){
+  catch (e) {
     console.log(e)
-    res.status(400).json({message:"Internal Server Error."})
+    res.status(400).json({ message: "Internal Server Error." })
   }
-  };
-
+};
 
 
 module.exports = {
