@@ -1,6 +1,6 @@
 const OrderModel = require("../../Models/order");
 const BookModel = require("../../Models/book");
-const {getBill}=require('../../Utils/mailGenerator')
+const {getBill,orderCancel}=require('../../Utils/mailGenerator')
 
 const getCountOfBooksSold=async(req,res)=>{
   try{
@@ -116,14 +116,19 @@ const updateStatus = async (req, res) => {
       { orderStatus: req.body.orderStatus },
       { new: true }
     )
-    .populate('userId')
+    statusUpdate=await OrderModel.findById(req.params.id
+      ).populate("userId")
     .populate("address")
     .populate("books.book");
-    console.log(req.body.orderStatus)
+    //console.log(req.body.orderStatus)
+   // console.log(statusUpdate.books[0].book)
     if(req.body.orderStatus==="confirmed"){
     
-      console.log(req.body.orderStatus)
+     // console.log(req.body.orderStatus)
     getBill(statusUpdate)
+    }
+    if(req.body.orderStatus==="cancelled"){
+      orderCancel(statusUpdate)
     }
     res.status(200).json({ message: "Status Updated", data: statusUpdate });
   } catch (e) {
@@ -139,6 +144,7 @@ const getOrderById = async (req, res) => {
     .populate("address")
     .populate("books.book")
     .populate("sellers.seller")
+    //console.log((order.books[0].book))
     res.status(200).send(order);
   } catch (e) {
     console.log(e);
@@ -191,6 +197,8 @@ const cancelOrder = async (req, res) => {
       { cancelledBy: "admin", cancelReason: req.body.cancelReason },
       { new: true }
     );
+    orderCancel(statusUpdate)
+
     res.status(200).json({ message: "Status Updated", data: statusUpdate });
   } catch (e) {
     console.log(e);

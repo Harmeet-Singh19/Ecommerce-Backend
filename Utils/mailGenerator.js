@@ -35,7 +35,7 @@ const {email,name}=req.body
   let response = {
     body: {
       name,
-      intro: "Welcome to DuBookX! We're very excited to have you on board.",
+      intro: "Welcome to DUbookX! We're very excited to have you on board.",
       outro: 'Need help, or have questions? Just reply to this email, we\'d love to help.'
     },
   };
@@ -62,8 +62,17 @@ const {email,name}=req.body
 let response = {
   body: {
     name,
-    intro: "Welcome to DuBookX! We're very excited to have you on board.",
-    outro: 'Need help, or have questions? Just reply to this email, we\'d love to help.'
+    intro: `Welcome to DUbookX! We're very excited to have you on board.
+    There is a link provided below which will take you to site where you shall login into your VENDOR account and upload all the books you want.`,
+    outro: 'Need help, or have questions? Just reply to this email, we\'d love to help.',
+    action: {
+      instructions: 'Click here to go to your Vendor Account.',
+      button: {
+         
+          text: 'Click Me',
+          link: 'https://du-book-admin-panel.herokuapp.com/'
+      }
+  }
   },
 };
 
@@ -91,7 +100,7 @@ const forgotPassword=(email,pass)=>{
       body: {
         name:"User",
         intro: `This is your new password: ${pass}.`,
-        outro: 'If you think this email was sent by mistake, please ignore it!'
+        outro: 'This Password can not be changed. If you think this email was sent by mistake, please ignore it!'
       },
     };
   
@@ -112,7 +121,7 @@ const forgotPassword=(email,pass)=>{
 const getBill = (res) => {
   const { name, email } = res.userId;
 
-  console.log(res)
+  //console.log(res)
   let response = {
     body: {
       name,
@@ -128,13 +137,16 @@ const getBill = (res) => {
       }
   },
       outro: "We thank you for your purchase.",
-      table: {
+      table: [
+        
+      {
+        title1:'Order Details',
         data: [
             {
-                OrderId: `#${res.orderId}`,
-                Total: `₹ ${res.finalAmount}`,
-                Address:`${res.address.address},${res.address.city},${res.address.state},${res.address.phone}`
-            },
+              OrderId:res.orderId,
+              FinalAmt:res.finalAmount,
+              DeliveryAddress:res.address.address+","+res.address.city+","+res.address.state+"-"+res.address.pincode
+            }
            
         ],
         columns: {
@@ -149,7 +161,8 @@ const getBill = (res) => {
                 Address: 'right'
             }
         }
-    },
+    }
+  ],
       signature: false,
     },
   };
@@ -177,8 +190,12 @@ const vendor = (em) => {
 let response = {
   body: {
     name:em.seller.name,
-    intro: `Your book ${em.book.name} was sold. Qty: ${em.bookQty} Addr :${em.buyerAddr}`,
-    outro: 'Looking forward to do more business with you.'
+    intro: `Your book ${em.book.name} was sold. Qty: ${em.bookQty} Addr :${em.buyerAddr}
+    The book shall be picked up from your given location within 48 hours. During this time period please pack the book in a small box/bubble wrap/plastic package which should be sealed properly.
+    You will be also required to print out and stick a shipping label which will be mailed to you by DUbookX.
+    If there is any issue regarding the same please reply to this email or Contact us on our social media Handles.`,
+    outro: `Looking forward to do more business with you.
+    https://linktr.ee/DUbookX`
   },
 };
 
@@ -196,11 +213,40 @@ transporter
   .catch((error) => console.error(error));
 };
 
+const orderCancel = (res) => {
+  const { name, email } = res.userId;
+ // console.log(res.books)
+ 
+  let response = {
+    body: {
+      name,
+      intro: `We are extremely sorry that \n OrderId:#${res.orderId} has been cancelled due to unavaibility of the requested book/s.
+      We hope to serve you again. `,
+      outro:`Please contact us if you have any query regarding this by replying to this email or contacting us on our social media handles.
+      https://linktr.ee/DUbookX `
+    }
+  };
+
+  let mail = MailGenerator.generate(response);
+
+  let message = {
+    from: EMAIL,
+    to: email,
+    subject: "Order Cancelled.",
+    html: mail,
+  };
+
+
+  transporter
+    .sendMail(message)
+    .catch((error) => console.error(error));
+};
 module.exports = {
   signup,
   getBill,
   forgotPassword,
   vendor,
-  vendorsignup
+  vendorsignup,
+  orderCancel
 }; 
 

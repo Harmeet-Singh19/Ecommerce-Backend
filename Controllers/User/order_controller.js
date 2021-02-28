@@ -104,7 +104,7 @@ const placeOrder = async (req, res) => {
         let newInstock=item.book.countInStock-item.quantity
         if(newInstock<0){
           let out=await BookModel.findById(item.book._id)
-          res.status(404).json({ message: "Order couldnt be placed. One or more items out of stock", data:out });
+          return res.status(404).json({ message: "Order couldnt be placed. One or more items out of stock", data:out });
         }
         let nbook=await BookModel.findOneAndUpdate(
           {_id:item.book._id},
@@ -145,10 +145,9 @@ const placeOrder = async (req, res) => {
       order.orderStatus = "placed";
       order = new OrderModel(order);
       order = await order.save();
-      res.status(200).json({ message: "Order Placed", order });
+      return res.status(200).json({ message: "Order Placed", order });
     }
 
-    //online payment
     else {
       const response = await instance.orders.create({
         amount: parseInt(order.finalAmount * 100),
@@ -160,7 +159,7 @@ const placeOrder = async (req, res) => {
       order.orderStatus = "staged";
       order = new OrderModel(order);
       order = await order.save();
-      res.status(200).json({
+      return res.status(200).json({
         message: "Order staged. Initiate payment to complete.",
         paymentId: response.id,
         order,
