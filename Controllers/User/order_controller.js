@@ -41,9 +41,7 @@ const getOrderDetails = async (req, res) => {
 };
 
 const placeOrder = async (req, res) => {
-  //address,orderType,
-  //dishes(dishRef,quantity)->in array format with key name as mentioned in bracket
-  //paymentMode,coupon,discountedBill,originalBill,finalBill
+
   try {
     //general api validations
     if (
@@ -56,8 +54,7 @@ const placeOrder = async (req, res) => {
       return res.status(440).json({ message: "Invalid request" });
     }
 
-    //fetch prices
-    //console.log(req.body.books)
+
     
     let books = req.body.books;
     let orderedBooksSet = new Set();
@@ -67,7 +64,6 @@ const placeOrder = async (req, res) => {
 
     });
     const orderedBooksId = Array.from(orderedBooksSet);
-    //console.log(orderedBooksId)
     
     const orderedBooksDetail = await BookModel.find({
       _id: { $in: orderedBooksId },
@@ -111,7 +107,6 @@ const placeOrder = async (req, res) => {
           {countInStock:newInstock},
           {new:true}
         )
-       // console.log(nbook.countInStock)
     });
     
     calculatedOriginalBill = parseFloat(calculatedOriginalBill.toFixed(2));
@@ -202,7 +197,6 @@ const verifyOrder = async (req, res) => {
     .populate('userId')
     .populate("address")
     .populate("books.book");
-   // getBill(sucessOrder)
     res.status(200).json({ message: "Order Placed", sucessOrder });
   
   } catch (e) {

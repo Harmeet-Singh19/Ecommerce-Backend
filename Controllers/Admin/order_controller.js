@@ -21,16 +21,13 @@ const getCountOfBooksSold=async(req,res)=>{
     for( let i=0;i<usages[0];i++){
      let order=usages[1][i].books
      let idx=order.findIndex((i)=>{
-      // console.log(i.book._id==req.params.id)
       return( i.book._id==req.params.id)
      })
-    // console.log(idx)
      quantity+=order[idx].quantity
     }
     usages[0]=quantity
    
-   // console.log(usages[0])
-    //console.log(req.body.bookId)
+
     res.status(200).json({message:"Succes",data:{usages}})
   }
   catch(e){
@@ -55,9 +52,6 @@ const getOrdersByVendor=async(req,res)=>{
       .sort({ placedAt: -1 })
     ]);
     
-   
-   // console.log(usages[0])
-    //console.log(req.body.bookId)
     res.status(200).json({message:"Succes",data:{usages}})
   }
   catch(e){
@@ -120,11 +114,10 @@ const updateStatus = async (req, res) => {
       ).populate("userId")
     .populate("address")
     .populate("books.book");
-    //console.log(req.body.orderStatus)
-   // console.log(statusUpdate.books[0].book)
+
     if(req.body.orderStatus==="confirmed"){
     
-     // console.log(req.body.orderStatus)
+
     getBill(statusUpdate)
     }
     if(req.body.orderStatus==="cancelled"){
@@ -144,7 +137,6 @@ const getOrderById = async (req, res) => {
     .populate("address")
     .populate("books.book")
     .populate("sellers.seller")
-    //console.log((order.books[0].book))
     res.status(200).send(order);
   } catch (e) {
     console.log(e);

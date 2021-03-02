@@ -18,17 +18,13 @@ const Enums =require("../../Utils/enums")
   const queryBook=async(req,res)=>{
       let {yearEnum,courseEnum,handEnum}=Enums;
       let {year,course,hand}=req.body;
-      //console.log(req.body)
       if (year.length===0) year=yearEnum
       if(course.length===0) course=courseEnum
       if(hand.length===0) hand=handEnum
      
       let t=false;
-     // console.log(year)
-     // console.log(subject)
-     // console.log(course)
+
       try{
-       // console.log(req.query.keyword)
         if(req.query.keyword!==''){
           var result1 ;
           BookModel.find({
@@ -56,32 +52,17 @@ const Enums =require("../../Utils/enums")
         ]
             
         },function(err,docs){
-        //  console.log(docs.length)
           if(!err){ 
             res.status(200).send(docs);
           return}
           console.log(err)
       })
        
-       // console.log("first",result1)
-       
-      
-     // console.log("second",result2)
+
      
       var result=result1
      
-      /*result3.forEach((t)=>{
-        let str=t._id
-        if(uniqueid.indexOf(str)===-1){
-          console.log(str)
-          
-          uniqueid.push(str);
-         
-          result.push(t);
-        }
-      })*/
-    //console.log(uniqueid)
-     // console.log("final",result)
+
         }
         else{
           var result =await BookModel.find({

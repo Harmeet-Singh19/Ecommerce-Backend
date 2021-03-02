@@ -3,13 +3,12 @@ const AdminModel = require("../../Models/admin");
 
 const addImage = async (req, res) => {
     try {
-      
-      //console.log(req.files)
+
       let links=[];
       req.files.map((file,index)=>{
           links.push(file.location)
       })
-    // console.log(req.body)
+
       res.status(200).json({message:"successful",images:links})
     } catch (e) {
       console.log(e);
@@ -18,12 +17,9 @@ const addImage = async (req, res) => {
   };
 
   async function addBook(req, res) {
-    //required->dish
+
     try {
       const admin = await AdminModel.findById(req.userData._id);
-     //console.log(admin)
-    // console.log(req.body)
-
       let newBook = new BookModel({ ...req.body });
       newBook = await newBook.save();
       res.status(200).json({ message: "Book added", data: newBook });
@@ -57,7 +53,7 @@ const getAllBooks = async (req, res) => {
   
 
   async function modifyBook(req, res) {
-    //required->dish,dishId
+
     try {
      delete req.body.image
       let updatedBook = await BookModel.findByIdAndUpdate(
@@ -104,7 +100,7 @@ const getAllBooks = async (req, res) => {
         req.files.map((file,index)=>{
             links.push(file.location)
         })
-       // console.log(req.files)
+
         const updatedBook = await BookModel.findByIdAndUpdate(
           req.params.id,
           {

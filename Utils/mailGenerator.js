@@ -27,11 +27,9 @@ let MailGenerator = new Mailgen({
 });
 
 const signup = (req) => {
-    console.log("mail")
+    
 const {email,name}=req.body
-  // sign up the user .....
-
-  // then send the email
+  
   let response = {
     body: {
       name,
@@ -54,11 +52,9 @@ const {email,name}=req.body
     .catch((error) => console.error(error));
 };
 const vendorsignup = (req) => {
-  console.log("mail")
+  
 const {email,name}=req.body
-// sign up the user .....
 
-// then send the email
 let response = {
   body: {
     name,
@@ -91,11 +87,7 @@ transporter
 };
 
 const forgotPassword=(email,pass)=>{
-  console.log("mail")
  
-    // sign up the user .....
-
-    // then send the email
     let response = {
       body: {
         name:"User",
@@ -121,7 +113,7 @@ const forgotPassword=(email,pass)=>{
 const getBill = (res) => {
   const { name, email } = res.userId;
 
-  //console.log(res)
+  
   let response = {
     body: {
       name,
@@ -131,9 +123,9 @@ const getBill = (res) => {
     action: {
       instructions: 'Check the status of your order in your account.',
       button: {
-          // Optional action button color
+          
           text: 'Go to Order History',
-          link: 'https://dubookex.netlify.app/profile'
+          link: 'https://www.dubookx.com//profile'
       }
   },
       outro: "We thank you for your purchase.",
@@ -182,10 +174,7 @@ const getBill = (res) => {
     .catch((error) => console.error(error));
 };
 const vendor = (em) => {
-  console.log("mail")
-
-// sign up the user .....
-
+  
 // then send the email
 let response = {
   body: {
@@ -215,7 +204,7 @@ transporter
 
 const orderCancel = (res) => {
   const { name, email } = res.userId;
- // console.log(res.books)
+ 
  
   let response = {
     body: {

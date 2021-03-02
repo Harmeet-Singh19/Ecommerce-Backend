@@ -22,13 +22,6 @@ async function newAdmin(req, res) {
       });
     }
 
-    /*const admin = await AdminModel.findById(req.userData._id);
-    if (!admin.roles.includes("create_admin")) {
-      return res
-        .status(404)
-        .json({ message: "Unauthorized for this operation." });
-    }*/
-
     const existingAdmin = await AdminModel.findOne({
       $or: [{ email: req.body.email }, { phone: req.body.phone }],
     });

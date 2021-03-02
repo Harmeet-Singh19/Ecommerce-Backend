@@ -22,7 +22,6 @@ const addAddress = async (req, res) => {
       !req.body.pincode ||
       !req.body.address
     ){
-      console.log("invalid")
       return res.status(440).json({ message: "Invalid request" });
     }
     let newAddress = await AddressModel({

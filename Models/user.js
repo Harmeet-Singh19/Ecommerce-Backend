@@ -1,5 +1,5 @@
 const mongoose = require("mongoose");
-//var uniqueValidator = require('mongoose-unique-validator');
+
 
 
 const userSchema = mongoose.Schema({
@@ -11,6 +11,6 @@ const userSchema = mongoose.Schema({
   facebookId: { type: String }
 });
 
-//Schema.plugin(uniqueValidator);
+
 
 module.exports = mongoose.model("user", userSchema);

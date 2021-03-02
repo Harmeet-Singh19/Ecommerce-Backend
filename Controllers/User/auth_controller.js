@@ -15,7 +15,6 @@ async function newAdmin(req, res) {
       !req.body.name
 
     ) {
-      //  console.log(req.body)
       return res.status(404).json({
         message: "Please send all required feilds.",
       });
@@ -169,11 +168,9 @@ const recover = (req, res) => {
       length: 10,
       numbers: true
     });
-    //console.log(user)
-    //newpassword='pass123'
+
     const salt = bcrypt.genSaltSync(10);
     const hashedPassword = bcrypt.hashSync(newpassword, salt);
-    // console.log(newpassword)
     let newuser = UserModel.updateOne({ email: req.body.email }, { password: hashedPassword }, function (
       err,
       result
@@ -185,9 +182,6 @@ const recover = (req, res) => {
         res.status(200).json({ message: "updated" })
       }
     })
-    //console.log(user)
-    // forgotPassword(req.body.email,newpassword)
-    //res.status(200).json({message:"updated"})
   }
   catch (e) {
     console.log(e)

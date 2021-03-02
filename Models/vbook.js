@@ -1,6 +1,6 @@
 const mongoose = require("mongoose");
 const Schema = mongoose.Schema;
-//var uniqueValidator = require('mongoose-unique-validator');
+
 
 const bookSchema = mongoose.Schema({
   //required fields
@@ -36,5 +36,4 @@ const bookSchema = mongoose.Schema({
 
 });
 
-//Schema.plugin(uniqueValidator);
 module.exports = mongoose.model("vbook", bookSchema);
