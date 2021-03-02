@@ -62,10 +62,10 @@ let response = {
     There is a link provided below which will take you to site where you shall login into your VENDOR account and upload all the books you want.`,
     outro: 'Need help, or have questions? Just reply to this email, we\'d love to help.',
     action: {
-      instructions: 'Click here to go to your Vendor Account.',
+      instructions: 'Please open the site from laptop/PC only.',
       button: {
          
-          text: 'Click Me',
+          text: 'Your Vendor Account',
           link: 'https://du-book-admin-panel.herokuapp.com/'
       }
   }

@@ -43,7 +43,7 @@ async function newAdmin(req, res) {
       isStudentVendor: req.body.isStudentVendor
     });
     await newAdmin.save();
-    signup(req);
+  //  signup(req);
     return res.status(200).json({ message: "Admin added.." });
   } catch (e) {
     console.log(e);
