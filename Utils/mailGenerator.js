@@ -1,17 +1,32 @@
 const nodemailer = require("nodemailer");
 const Mailgen = require("mailgen");
+const {google}=require("googleapis")
+const OAuth2 = google.auth.OAuth2;
 
 const EMAIL=process.env.MAIL_EMAIL;
 const PASSWORD=process.env.MAIL_PASSWORD;
 const MAIN_URL=process.env.MAIN_URL;
 
-
+const oauth2Client = new OAuth2(
+  "330850319181-pj47ceriu0f7s87vto6349fi5j23h8b5.apps.googleusercontent.com", // ClientID
+  "fITOpfiVKlJCq1YIZUxt9WU0", // Client Secret
+  "https://developers.google.com/oauthplayground" // Redirect URL
+);
+oauth2Client.setCredentials({
+  refresh_token: "1//04MFsE2EmNSA9CgYIARAAGAQSNwF-L9Irz2MWbspWyWuIHj7Jq4NkX4U9vqDjGMCKLyt03KaffzVCYprUlZ3Rsz7ITiQBOFMX4y0"
+});
+const accessToken = oauth2Client.getAccessToken()
 let transporter = nodemailer.createTransport({
   service: "Gmail",
-  secure: true,
+  
   auth: {
-    user: EMAIL,
-    pass: PASSWORD,
+    type:"OAuth2",
+    user:EMAIL,
+    clientId:"330850319181-pj47ceriu0f7s87vto6349fi5j23h8b5.apps.googleusercontent.com",
+    clientSecret:"fITOpfiVKlJCq1YIZUxt9WU0",
+    refreshToken:"1//04MFsE2EmNSA9CgYIARAAGAQSNwF-L9Irz2MWbspWyWuIHj7Jq4NkX4U9vqDjGMCKLyt03KaffzVCYprUlZ3Rsz7ITiQBOFMX4y0",
+    accessToken:accessToken
+
   },
 });
 
