@@ -1,6 +1,6 @@
 const OrderModel = require("../../Models/order");
 const BookModel = require("../../Models/book");
-const {getBill,orderCancel}=require('../../Utils/mailGenerator')
+const {getBill,orderCancel,orderDelivered}=require('../../Utils/mailGenerator')
 
 const getCountOfBooksSold=async(req,res)=>{
   try{
@@ -114,6 +114,9 @@ const updateStatus = async (req, res) => {
       ).populate("userId")
     .populate("address")
     .populate("books.book");
+    if(req.body.orderStatus=="delivered"){
+      orderDelivered(statusUpdate)
+    }
 
     if(req.body.orderStatus==="confirmed"){
     

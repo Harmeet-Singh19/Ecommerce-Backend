@@ -19,17 +19,18 @@ const orderSchema = mongoose.Schema({
       type: String,
       required: true,
       enum: ["user", "automation"],
-      default: "user",
+      default: "user",   
     },
-    books: {
-        type: [
-          {
-            book: { type: Schema.Types.ObjectId, ref: "book" },
-            quantity: { type: Number },
-            billedPrice: { type: Number },
-          },
-        ],
-      },
+    books:{
+      type: [
+        {
+          book: { type: Schema.Types.ObjectId, ref: "book" },
+          quantity: { type: Number },
+          billedPrice: { type: Number },
+          name:{type:String}
+        },
+      ],
+    },
    
     //mutable feilds
     orderStatus: {

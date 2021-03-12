@@ -128,7 +128,16 @@ const forgotPassword=(email,pass)=>{
 const getBill = (res) => {
   const { name, email } = res.userId;
 
-  
+  let arr=[];
+  res.books.map((b)=>{
+    let obj={
+      Name:b.name,
+      Qty:b.quantity,
+      Price:b.billedPrice
+    }
+   arr.push(obj)
+  })
+  console.log(arr)
   let response = {
     body: {
       name,
@@ -140,35 +149,51 @@ const getBill = (res) => {
       button: {
           
           text: 'Go to Order History',
-          link: 'https://www.dubookx.com//profile'
+          link: 'https://www.dubookx.com/profile'
       }
   },
       outro: "We thank you for your purchase.",
       table: [
         
       {
-        title1:'Order Details',
-        data: [
-            {
-              OrderId:res.orderId,
-              FinalAmt:res.finalAmount,
-              DeliveryAddress:res.address.address+","+res.address.city+","+res.address.state+"-"+res.address.pincode
-            }
-           
-        ],
+        title1:'Book Details',
+        data:arr,
         columns: {
             // Optionally, customize the column widths
             customWidth: {
-                orderId: '25%',
-                Total: '20%',
-                Address:'55%'
+                Name: '25%',
+                Qty: '20%',
+                Price:'55%'
             },
             // Optionally, change column text alignment
             customAlignment: {
-                Address: 'right'
+              Price: 'right'
             }
         }
-    }
+    },
+    {
+      title2:'Order Details',
+      data: [
+          {
+            OrderId:res.orderId,
+            FinalAmt:res.finalAmount,
+            DeliveryAddress:res.address.address+","+res.address.city+","+res.address.state+"-"+res.address.pincode
+          }
+         
+      ],
+      columns: {
+          // Optionally, customize the column widths
+          customWidth: {
+            OrderId: '25%',
+              FinalAmt: '20%',
+              DeliveryAddress:'55%'
+          },
+          // Optionally, change column text alignment
+          customAlignment: {
+            DeliveryAddress: 'right'
+          }
+      }
+  }
   ],
       signature: false,
     },
@@ -245,12 +270,82 @@ const orderCancel = (res) => {
     .sendMail(message)
     .catch((error) => console.error(error));
 };
+
+const orderPlaced = (res) => {
+  const { name, email } = res.userId;
+ let s="";
+ res.books.map((i,b)=>{
+   s+=`${i+1}`
+   s+=`${b.name} x ${b.quantity} \n`;
+ })
+ 
+  let response = {
+    body: {
+      name,
+      intro: `Your order for the following has been recieved- \n 
+      ${s} \n You shall receive a confirmation email within 24 hours. `,
+      outro:`Please contact DUbookX regarding any issue with the order via the website/instagram. `
+    }
+  };
+
+  let mail = MailGenerator.generate(response);
+
+  let message = {
+    from: EMAIL,
+    to: email,
+    subject: "Order Confirmation.",
+    html: mail,
+  };
+
+
+  transporter
+    .sendMail(message)
+    .catch((error) => console.error(error));
+};
+
+const orderDelivered = (res) => {
+  const { name, email } = res.userId;
+
+  let response = {
+    body: {
+      name,
+      intro: `We hope you have recieved the order, Thank you for doing Business with us. `,
+      outro:`Regarding any queries please contact DUbookX via the website/instagram. `
+    }
+  };
+
+  let mail = MailGenerator.generate(response);
+
+  let message = {
+    from: EMAIL,
+    to: email,
+    subject: "Order Delivered.",
+    html: mail,
+  };
+
+
+  transporter
+    .sendMail(message)
+    .catch((error) => console.error(error));
+};
+
+
 module.exports = {
   signup,
   getBill,
   forgotPassword,
   vendor,
   vendorsignup,
-  orderCancel
+  orderCancel,
+  orderPlaced,
+  orderDelivered
 }; 
 
+
+
+
+
+
+// We hope you have recieved the order, Thank you for doing Business with us.
+
+// Regarding any queries please contact DUbookX via the website/instagram.

@@ -3,7 +3,7 @@ const BookModel = require("../../Models/book");
 const UserModel=require('../../Models/user')
 const crypto = require("crypto");
 const Rzp = require("razorpay");
-const {getBill}=require('../../Utils/mailGenerator')
+const {orderPlaced}=require('../../Utils/mailGenerator')
 const rates =require('../../Utils/rates')
 const instance = new Rzp({
   key_id: process.env.RZP_ID,
@@ -88,6 +88,7 @@ const placeOrder = async (req, res) => {
           book: item.book._id,
           quantity: item.quantity,
           billedPrice: priceMap[item.book._id],
+          name:item.book.name
         });
         calculatedOriginalBill += priceMap[item.book._id] * item.quantity;
         if(check.indexOf(item.book.seller)===-1){
@@ -138,8 +139,10 @@ const placeOrder = async (req, res) => {
     //cash payment
     if (req.body.paymentMode === "cash") {
       order.orderStatus = "placed";
+
       order = new OrderModel(order);
       order = await order.save();
+
       return res.status(200).json({ message: "Order Placed", order });
     }
 
@@ -197,6 +200,7 @@ const verifyOrder = async (req, res) => {
     .populate('userId')
     .populate("address")
     .populate("books.book");
+    orderPlaced(sucessOrder);
     res.status(200).json({ message: "Order Placed", sucessOrder });
   
   } catch (e) {
