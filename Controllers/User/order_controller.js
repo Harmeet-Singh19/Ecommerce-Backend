@@ -142,7 +142,7 @@ const placeOrder = async (req, res) => {
 
       order = new OrderModel(order);
       order = await order.save();
-
+      orderPlaced(order);
       return res.status(200).json({ message: "Order Placed", order });
     }
 
@@ -197,10 +197,11 @@ const verifyOrder = async (req, res) => {
       },
       { new: true }
     )
-    .populate('userId')
+    successOrder=await OrderModel.findById(successOrder._id
+      ).populate("userId")
     .populate("address")
     .populate("books.book");
-    orderPlaced(sucessOrder);
+     orderPlaced(sucessOrder);
     res.status(200).json({ message: "Order Placed", sucessOrder });
   
   } catch (e) {

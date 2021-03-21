@@ -274,9 +274,11 @@ const orderCancel = (res) => {
 const orderPlaced = (res) => {
   const { name, email } = res.userId;
  let s="";
- res.books.map((i,b)=>{
+ let i=1;
+ res.books.map((b)=>{
    s+=`${i+1}`
    s+=`${b.name} x ${b.quantity} \n`;
+   i++;
  })
  
   let response = {
