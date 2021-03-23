@@ -196,9 +196,7 @@ const verifyOrder = async (req, res) => {
         onlinePaymentStatus: "success",
       },
       { new: true }
-    )
-    successOrder=await OrderModel.findOne({ razorpayOrderId: order_id }
-      ).populate("userId")
+    ).populate("userId")
     .populate("address")
     .populate("books.book");
      orderPlaced(sucessOrder);
