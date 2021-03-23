@@ -197,7 +197,7 @@ const verifyOrder = async (req, res) => {
       },
       { new: true }
     )
-    successOrder=await OrderModel.findById(successOrder._id
+    successOrder=await OrderModel.findOne({ razorpayOrderId: order_id }
       ).populate("userId")
     .populate("address")
     .populate("books.book");
