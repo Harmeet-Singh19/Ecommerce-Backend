@@ -69,7 +69,7 @@ const orderSchema = mongoose.Schema({
     deliveryCharges: { type: Number },
     gst: { type: Number, default: 0 },
     finalAmount: { type: Number, required: true },
-
+    discount: { type :Number,default:0},
     //optional feilds
     remarks: { type: String },
     unDeliveredReason: { type: String },

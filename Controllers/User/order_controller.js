@@ -128,14 +128,17 @@ const placeOrder = async (req, res) => {
     
     //finalBill validations
     order.finalAmount = parseFloat(req.body.finalAmount);
-
+    if(req.body.discount!==0){
+      order.finalAmount=order.finalAmount*(100-discount);
+      order.finalAmount/=100;
+    }
     
     order.userId = req.userData._id;
     order.address = req.body.address;
     order.orderId = getCode();
     order.placedAt = Date.now();
     order.paymentMode = req.body.paymentMode;
-
+    order.discount=req.body.discount;
     //cash payment
     if (req.body.paymentMode === "cash") {
       order.orderStatus = "placed";
