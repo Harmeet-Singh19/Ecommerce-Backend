@@ -128,9 +128,12 @@ const placeOrder = async (req, res) => {
     
     //finalBill validations
     order.finalAmount = parseFloat(req.body.finalAmount);
+    let delivery=order.finalAmount-order.originalAmount;
+    order.finalAmount-=delivery;
     if(req.body.discount!==0){
       order.finalAmount=order.finalAmount*(100-req.body.discount);
       order.finalAmount/=100;
+      order.finalAmount+=delivery;
     }
     
     order.userId = req.userData._id;
